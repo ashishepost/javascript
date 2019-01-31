@@ -4,8 +4,8 @@ Array.prototype.filteru = function(callback) {
     
     self = this;
     outputArray = [];
-    if(this instanceof Array){
-        for (var i = 0; i < this.length; i++) {
+    if(self instanceof Array){
+        for (var i = 0; i < self.length; i++) {
             
             if (callback(self[i]) != undefined) {
                 outputArray.push(callback(self[i]));

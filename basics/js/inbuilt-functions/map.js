@@ -40,6 +40,7 @@ Array.prototype.customMapEach = function(callback) {
 // User Section
 arrayData = ['ashish', 'sunil', 'Guarav'];
 everyItemCallback = function(data) {
+    console.log(this)
     return 'kal' + data;
 }
 

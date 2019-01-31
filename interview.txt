@@ -1,0 +1,27 @@
+array main second largest
+
+4(4/4+4)
+
+array operator
+
+html features:
+message passing cross domain 
+
+web socket
+
+service workers & web worker:
+
+unit testing
+
+chrome sqldb
+
+css marging 0 auto div with flex with 
+
+css sector via mdn
+
+array.filter("")
+
+visibilty none, hidden
+
+spy in jasmine
+
