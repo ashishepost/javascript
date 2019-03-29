@@ -1,53 +1,86 @@
-function bindu(lal) {
-	// console.log(this);
-	console.log(lal + this.key);
-}
+(function kala(){
+console.log(b);
+var a = b = 5;
+})();
 
-obj = {key: 'key Data'};
-bindu.bind(obj)('hey ');
-bindu.call(obj, 'hey ');
-bindu.apply(obj, ['hey ']);
+// console.log(a, b);
 
 
 
 
-function closure(){
-	var upper = "upper";
 
-	return function(){
-		console.log(upper);
-	}
+// var start = new Date().getTime();
 
-}
+// function first(num) {
+//     return function next(numNext) {
 
-
-closure()();
-
-
-function ClassEx(name) {
-    this.name = name;
-}
+//         if (arguments.length) {
+//             num = num + numNext;
+//             return next;
+//         } else {
+//             console.log(num);
+//         }
 
 
-ClassEx.prototype.displayName = function(){
-    console.log(this.name);
-}
+//     }
+// }
+
+// first(10)(20)(30)(40)();
+
+// var end = new Date().getTime();
+// console.log(end - start);
 
 
-var classObj = new ClassEx('honey');
-classObj.displayName();
+// var start = new Date().getTime();
+// function partial(argOuter) {
+//   const args = [];
+//   if (!arguments.length) {
+//     return 'No Args supplied';
+//   }
+//   args.push(argOuter);
+//   return function inner(argInner) {
+//     if (arguments.length) {
+//       args.push(argInner);
+//       return inner;
+//     }
+//     // Multiply all the arguments.
+//     return args.reduce((a, b) => a * b);
+//   }
+// }
 
-class User {
 
-    constructor(name) {
-        this.name = name;
-    }
+// console.log(partial(2)(4)(10)());
 
-    displayName() {
-        console.log(this.name);
-    }
 
-}
 
-let userObj = new User('Singh');
-userObj.displayName();
+// var end = new Date().getTime();
+// console.log(end - start);
+
+
+
+// var obj = {
+//   a: "A data",
+//   b: "",
+//   methodA: function(num){
+//     return this.b = num;
+
+//   },
+//   methodB: function(num){
+//     return num;
+//     // console.log(this.a);
+//   }
+// };
+// var objF = function(data){
+//  this.tata = data;
+//  // console.log(this.tata);
+//  // return 10;
+// }
+
+// var inObj = Object.create(obj);
+
+// console.log(inObj.methodB());
+
+// var inObjF = new objF('Ahsihs');
+
+// console.log(inObjF);
+// console.log(inObj instanceof obj);
