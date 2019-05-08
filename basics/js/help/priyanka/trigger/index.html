@@ -1,0 +1,248 @@
+<div *ngIf="loading" style="text-align: center;margin-top: 300px;z-index: 2; " class='loader'>
+    <div class="loading-spinner flex-center" aria-label="Loading, please wait...">
+      <div class="wrapper">
+        <div class="wheel"></div>
+      </div>
+    </div>
+  </div>  
+
+  
+  <!-- Add question component here -->
+        <div *ngFor='let tab of activeTab'>
+            <div>
+                <div class="tab-content-title"><h5>{{tab.TAB_HEADER}}</h5></div>
+                <span *ngIf='tab.TAB_HEADER_INFO!=""'>{{tab.TAB_HEADER_INFO}}<br> <br></span>
+                <!-- <div *ngFor='let question of tab.TAB_QUESTIONS;'> -->
+                    <div class="row">
+                        <div class='col-md-6' >
+                            <div *ngFor='let question of evenQues;'>
+                            <!-- Date Type -->
+                            <div  *ngIf="question.QUESTION_TYPE=='Date'">
+                                <div class="form-group">
+                                    <div class="form-group__text">
+                                        <input id="meetingDate" type="date" name="meetingDate" [(ngModel)]="storeAnswers[question.QUESTION_ID][0]" [disabled]="ifDisabled(question['WHO_CAN_EDIT'])" (change)="setAnswer(question.QUESTION_ID,storeAnswers[question.QUESTION_ID][0],'Date',question)">
+                                            <label for="meetingDate" style="font-weight: bold;">
+                                                <span>{{question.QUESTION}}</span>
+                                                <span *ngIf='question.IS_MANDATORY=="Y"' title="This is a required field" class="required--asterik" >*</span>
+                                            </label>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                            <!-- DropDown -->
+                            <div *ngIf="question.QUESTION_TYPE == 'Dropdown'" [ngClass]="getDisabledClass(question.WHO_CAN_EDIT)">
+                                    <div>
+                                            <label style="font-weight: bold;" >
+                                                <span>{{question.QUESTION}}</span>
+                                                <span *ngIf='question.IS_MANDATORY=="Y"' title="This is a required field" class="required--asterik">*</span>
+                                            </label>
+                                        </div>
+                                    <mat-form-field [ngClass]="getDisabledDiv(question.WHO_CAN_EDIT)" >
+                                        <mat-select placeholder="Please select.." [disabled]="ifDisabled(question['WHO_CAN_EDIT'])" [(ngModel)]="storeAnswers[question.QUESTION_ID][0]" (ngModelChange)="onModelChange($event, question.QUESTION_ID, 'Dropdown',question)">
+                                                <mat-option *ngFor="let answer of question.POSSIBLE_ANSWERS" [value]="answer.LOOKUP_ID">{{answer.LOOKUP_VALUE}}</mat-option>
+                                            </mat-select>
+                                          </mat-form-field>   
+                            </div>
+                            <!-- Radio Type -->
+                            <div *ngIf="question.QUESTION_TYPE=='Radio'" [ngClass]="getDisabledClass(question.WHO_CAN_EDIT)">
+                                <div>
+                                    <label style="font-weight: bold;">
+                                        <span>{{question.QUESTION}}</span>
+                                        <span *ngIf='question.IS_MANDATORY=="Y"' title="This is a required field" class="required--asterik">*</span>
+                                    </label>
+                                </div>
+                                <div *ngFor='let option of question.POSSIBLE_ANSWERS' class="form-group form-group--inline form-group--loose">
+                                            <label class="radio">
+                                                <input type="radio" [name]="option.LOOKUP_ID" [value]="option.LOOKUP_ID" 
+                                                        [disabled]="ifDisabled(question['WHO_CAN_EDIT'])" 
+                                                        [(ngModel)]="storeAnswers[question.QUESTION_ID][0]" 
+                                                        (change)="setAnswer(question.QUESTION_ID,storeAnswers[question.QUESTION_ID][0],'Radio',question)">
+                                                <span class="radio__input"></span>
+                                                <span class="radio__label hidden-xs">{{option.LOOKUP_VALUE}}</span>
+                                            
+                                            </label>
+                                </div>
+                                <br>
+                                <br>
+                            </div>
+                            <!-- Text -->
+                            <div *ngIf='question.QUESTION_TYPE=="Text"' >
+                                    <div class="form-group">
+                                        <div class="form-group__text">
+                                            <input id="question.QUESTION_ID" type="text" name="question.QUESTION_ID" [disabled]="ifDisabled(question['WHO_CAN_EDIT'])" [(ngModel)]="storeAnswers[question.QUESTION_ID][0]" (change)="setAnswer(question.QUESTION_ID,storeAnswers[question.QUESTION_ID][0],'Text',question)">
+                                            <label for="pf" style="font-weight: bold;">
+                                                <span>{{question.QUESTION}}</span>
+                                                <span *ngIf='question.IS_MANDATORY=="Y"' title="This is a required field" class="required--asterik">*</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            <!-- Multi Select -->
+                            <div *ngIf='question.QUESTION_TYPE=="Multiselect"' [ngClass]="getDisabledClass(question.WHO_CAN_EDIT)">
+                                <div class="form-group" >
+                                   
+                                        <label for="productInfo" style="font-weight: bold;">
+                                                    <span>{{question.QUESTION}}</span>
+                                                    <span *ngIf='question.IS_MANDATORY=="Y"' title="This is a required field" class="required--asterik">*</span>
+                                        </label>
+                                        <span *ngIf='question.HELP_TEXT!=""'>{{question.HELP_TEXT}}</span>
+                                        <mat-form-field [ngClass]="getDisabledDiv(question.WHO_CAN_EDIT)" >
+                                            <mat-select placeholder="Select all that apply" (ngModelChange)="onModelChange($event, question.QUESTION_ID, 'Multiselect',question)"  multiple [disabled]="ifDisabled(question['WHO_CAN_EDIT'])" #options="ngModel" [(ngModel)]="storeAnswers[question.QUESTION_ID][0]">
+                                                    <button class='btn-primary' (click)="selectAll(options, question.POSSIBLE_ANSWERS)">
+                                                   Select All
+                                                </button>
+                                                <mat-option *ngFor="let answer of question.POSSIBLE_ANSWERS" [value]="answer.LOOKUP_ID">{{answer.LOOKUP_VALUE}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                            </div>
+                            </div>
+                        </div> 
+                        <div class='col-md-6' >
+                                <div *ngFor='let question of oddQues;'>
+                                <!-- Date Type -->
+                                    <div *ngIf='question.QUESTION_TYPE=="Date"'>
+                                        <div class="form-group">
+                                            <div class="form-group__text">
+                                                <input id="meetingDate" type="date" name="meetingDate" [(ngModel)]="storeAnswers[question.QUESTION_ID][0]" [disabled]="ifDisabled(question['WHO_CAN_EDIT'])" (change)="setAnswer(question.QUESTION_ID,storeAnswers[question.QUESTION_ID][0],'Date',question)">
+                                                    <label for="meetingDate" style="font-weight: bold;">
+                                                        <span>{{question.QUESTION}}</span>
+                                                        <span *ngIf='question.IS_MANDATORY=="Y"' title="This is a required field" class="required--asterik" >*</span>
+                                                    </label>
+                                            </div>
+                                        </div>
+                                        <br>
+                                    </div>
+                                <!-- DropDown -->
+                                    <div *ngIf="question.QUESTION_TYPE == 'Dropdown'" [ngClass]="getDisabledClass(question.WHO_CAN_EDIT)">
+                                            <div>
+                                                    <label style="font-weight: bold;">
+                                                        <span>{{question.QUESTION}}</span>
+                                                        <span *ngIf='question.IS_MANDATORY=="Y"' title="This is a required field" class="required--asterik">*</span>
+                                                    </label>
+                                                </div>
+                                            <mat-form-field [ngClass]="getDisabledDiv(question.WHO_CAN_EDIT)" >
+                                                <mat-select placeholder="Please select.." [(ngModel)]="storeAnswers[question.QUESTION_ID][0]" [disabled]="ifDisabled(question['WHO_CAN_EDIT'])" (ngModelChange)="onModelChange($event, question.QUESTION_ID, 'Dropdown',question)">
+                                                        <mat-option *ngFor="let answer of question.POSSIBLE_ANSWERS" [value]="answer.LOOKUP_ID">{{answer.LOOKUP_VALUE}}</mat-option>
+                                                    </mat-select>
+                                                  </mat-form-field>   
+                                    </div>
+                                <!-- Radio Type -->
+                                    <div *ngIf='question.QUESTION_TYPE=="Radio"' [ngClass]="getDisabledClass(question.WHO_CAN_EDIT)">
+                                        <div>
+                                            <label style="font-weight: bold;">
+                                                <span>{{question.QUESTION}}</span>
+                                                <span *ngIf='question.IS_MANDATORY=="Y"' title="This is a required field" class="required--asterik">*</span>
+                                            </label>
+                                        </div>
+                                        <div *ngFor='let option of question.POSSIBLE_ANSWERS' class="form-group form-group--inline form-group--loose">
+                                                    <label class="radio">
+                                                        <input type="radio" [name]="option.LOOKUP_ID" [value]="option.LOOKUP_ID" 
+                                                                [(ngModel)]="storeAnswers[question.QUESTION_ID][0]" 
+                                                                [disabled]="ifDisabled(question['WHO_CAN_EDIT'])" 
+                                                                (change)="setAnswer(question.QUESTION_ID,storeAnswers[question.QUESTION_ID][0],'Radio',question)">
+                                                        <span class="radio__input"></span>
+                                                        <span class="radio__label hidden-xs">{{option.LOOKUP_VALUE}}</span>
+                                                    </label>
+                                        </div>
+                                        <br>
+                                        <br>
+                                    </div>
+                                <!-- Text -->
+                                    <div *ngIf='question.QUESTION_TYPE=="Text"' >
+                                            <div class="form-group">
+                                                <div class="form-group__text">
+                                                    <input id="question.QUESTION_ID" type="text" name="question.QUESTION_ID" [(ngModel)]="storeAnswers[question.QUESTION_ID][0]" [disabled]="ifDisabled(question['WHO_CAN_EDIT'])" (change)="setAnswer(question.QUESTION_ID,storeAnswers[question.QUESTION_ID][0],'Text',question)">
+                                                    <label for="pf" style="font-weight: bold;">
+                                                        <span>{{question.QUESTION}}</span>
+                                                        <span *ngIf='question.IS_MANDATORY=="Y"' title="This is a required field" class="required--asterik">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <br>
+                                        </div>
+                                <!-- Multi Select -->
+                                    <div *ngIf='question.QUESTION_TYPE=="Multiselect"' [ngClass]="getDisabledClass(question.WHO_CAN_EDIT)">
+                                        <div class="form-group" >
+                                           
+                                                <label for="productInfo" style="font-weight: bold;">
+                                                            <span>{{question.QUESTION}}</span>
+                                                            <span *ngIf='question.IS_MANDATORY=="Y"' title="This is a required field" class="required--asterik">*</span>
+                                                </label>
+                                                <span *ngIf='question.HELP_TEXT!=""'>{{question.HELP_TEXT}}</span>
+                                                <mat-form-field [ngClass]="getDisabledDiv(question.WHO_CAN_EDIT)" >
+                                                    <mat-select placeholder="Select all that apply" (ngModelChange)="onModelChange($event, question.QUESTION_ID, 'Multiselect',question)"  multiple [disabled]="ifDisabled(question['WHO_CAN_EDIT'])" #options="ngModel" [(ngModel)]="storeAnswers[question.QUESTION_ID][0]">
+                                                            <button class='btn-primary' (click)="selectAll(options, question.POSSIBLE_ANSWERS)">
+                                                           Select All
+                                                        </button>
+                                                        <mat-option *ngFor="let answer of question.POSSIBLE_ANSWERS" [value]="answer.LOOKUP_ID">{{answer.LOOKUP_VALUE}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                    </div>
+                                </div>
+
+                                <!-- <md-form-field> 
+                                        <input *ngIf='triggerRes' type="text" mdInput [(ngModel)]="triggerRes" placeholder="Response">
+                                      </md-form-field> -->
+
+                        </div> 
+                    </div>
+                <!-- Triggered Questions -->
+                
+                    <div *ngFor='let question of newlineQues;' class="row">
+                    <!-- for more than 4-option-radio questions that need one full row -->
+                    <div *ngIf='question.QUESTION_TYPE=="Radio"' class="col" [ngClass]="getDisabledClass(question.WHO_CAN_EDIT)">
+                        <div>
+                            <label style="font-weight: bold;">
+                                <span>{{question.QUESTION}}</span>
+                                <span *ngIf='question.IS_MANDATORY=="Y"' title="This is a required field" class="required--asterik">*</span>
+                            </label>
+                        </div>
+                        <div *ngFor='let option of question.POSSIBLE_ANSWERS' class="form-group form-group--inline form-group--loose">
+                                    <label class="radio">
+                                        <input type="radio" [name]="option.LOOKUP_ID" [value]="option.LOOKUP_ID" 
+                                                [disabled]="ifDisabled(question['WHO_CAN_EDIT'])" 
+                                                [(ngModel)]="storeAnswers[question.QUESTION_ID][0]" 
+                                                (change)="setAnswer(question.QUESTION_ID,storeAnswers[question.QUESTION_ID][0],'Radio',question)">
+                                        <span class="radio__input"></span>
+                                        <span class="radio__label hidden-xs">{{option.LOOKUP_VALUE}}</span>
+                                    </label>
+                        </div>
+                        <br>
+                        <br>
+                    </div>
+                    <!-- Paragraph -->
+                        <div *ngIf='question.QUESTION_TYPE=="Paragraph"' class="col">
+                                    <div class="form-group">
+                                        <div class="form-group__text">
+                                            <textarea id="question.QUESTION_ID" name="question.QUESTION_ID" class="textarea" rows="3" 
+                                                        [(ngModel)]="storeAnswers[question.QUESTION_ID][0]" [disabled]="ifDisabled(question['WHO_CAN_EDIT'])" (change)="setAnswer(question.QUESTION_ID,storeAnswers[question.QUESTION_ID][0],'Paragraph',question)"></textarea>
+                                            <label for="productInfo" style="font-weight: bold;">
+                                                <span>{{question.QUESTION}}</span><br>
+                                                <span *ngIf='question.IS_MANDATORY=="Y"' title="This is a required field" class="required--asterik">*</span>
+                                            </label>
+                                            <span *ngIf='question.HELP_TEXT!=""'>{{question.HELP_TEXT}}</span>
+                                        </div>
+                                    </div>
+                        </div> 
+                    </div> 
+                <!-- </div> -->
+            </div> 
+            <div style="text-align: right">
+                    <!-- <button *ngIf='tab.ORDER>1' type="button" id="landingSubmit" class="center-button btn btn--primary" 
+                        (click)="previousTab();">Previous</button>
+                    <button *ngIf='tab.ORDER < questionDetails.length' type="button" id="landingSubmit" class="center-button btn btn--primary" 
+                        (click)="nextTab();" >Next</button> -->
+                    <button type="button" id="landingSave" class="center-button btn btn--primary" 
+                        (click)="save('save');" >Save</button>
+                    <button type="button" id="landingSubmit" class="center-button btn btn--primary" 
+                        (click)="save('submit');" >Save &amp; Next</button>
+            </div>   
+        </div>
+        
+  
+
+
+

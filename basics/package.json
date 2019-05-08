@@ -5,7 +5,8 @@
   "main": "test.js",
   "scripts": {
     "coverage": "istanbul cover ./test.js",
-    "test": "istanbul cover ./mischief.js"
+    "test": "istanbul cover ./mischief.js",
+    "lite": "lite-server"
   },
   "repository": {
     "type": "git",
@@ -27,7 +28,8 @@
   },
   "homepage": "https://github.com/dwyl/learn-istanbul#readme",
   "devDependencies": {
-    "istanbul": "^0.4.4"
+    "istanbul": "^0.4.4",
+    "lite-server": "^2.4.0"
   },
   "dependencies": {
     "api-spec-transformer": "^0.2.6"
