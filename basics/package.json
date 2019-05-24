@@ -1,12 +1,12 @@
 {
-  "name": "learn-istanbul",
+  "name": "Practising JavaScript",
   "version": "2.0.0",
   "description": "Learn how to use istanbul for tracking test/code coverage in your JS projects",
   "main": "test.js",
   "scripts": {
     "coverage": "istanbul cover ./test.js",
     "test": "istanbul cover ./mischief.js",
-    "lite": "lite-server"
+    "start": "lite-server"
   },
   "repository": {
     "type": "git",
